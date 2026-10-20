@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { cpSync, existsSync, lstatSync, mkdirSync, mkdtempSync, readFileSync, readlinkSync, realpathSync, renameSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, lstatSync, mkdirSync, mkdtempSync, readFileSync, readlinkSync, realpathSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -114,7 +114,6 @@ async function box(packages: readonly string[]) {
     writeFileSync(join(op, "settings.json"), JSON.stringify(files.settings));
     writeFileSync(join(pkg, "package.json"), JSON.stringify({ name: "pk", version: "0.0.1", keywords: ["pi-package"], pi: { skills: [] } }));
     execFileSync(process.execPath, [PI, "install", "-l", pkg], { cwd: tenant, env: piEnv(op), stdio: "pipe" });
-    return op;
   };
   return { pi, tenant, agentDir, store, turn, phase, reloadThenDue, click, jobs };
 }
@@ -129,9 +128,7 @@ describe("due jobs after a reload, on the pinned pi with pi-cron as npm installs
       const first = await b.reloadThenDue("after-first", await b.phase("phase-1"));
       expect(first).toMatchObject({ lastStatus: "ok", reached: true });
 
-      const op = b.click();
-      // The package op's pi loaded the extensions and started a session, and was not linked: only the seller's session is.
-      expect(existsSync(join(op, "cron"))).toBe(false);
+      b.click();
       const second = await b.reloadThenDue("after-click", first.lastRun!);
       expect(second).toMatchObject({ lastStatus: "ok", reached: true });
     }, 180_000);

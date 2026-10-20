@@ -23,7 +23,7 @@ it("the skill's description says what it needs and how both packages install", a
   const { loader } = await loadPackage(ROOT);
   const [skill] = loader.getSkills().skills;
   expect(skill!.description).toContain("if no cron skill is listed, it is not installed");
-  expect(skill!.description).toContain("`pi install -l npm:@bacnh85/pi-cron` run in /tenant (without -l it is gone at the box's next start)");
+  expect(skill!.description).toContain("`pi install -l npm:@bacnh85/pi-cron@0.4.0` run in /tenant (without -l it is gone at the box's next start)");
   expect(skill!.description).toContain("`pi install -l npm:cx-heartbeat` in /tenant");
 });
 

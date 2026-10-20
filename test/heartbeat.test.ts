@@ -79,7 +79,7 @@ it("notes the intervals pi-cron's extension file creates, once per scope, and cl
   expect((cron as unknown as { _destroyed: boolean })._destroyed).toBe(true);
 });
 
-it("links only in an RPC session and clears at every shutdown", () => {
+it("registers a start and a shutdown handler, and links nothing in a print-mode session", () => {
   const handlers = new Map<string, (event: unknown, ctx: unknown) => unknown>();
   heartbeat({ on: (name: string, handler: never) => handlers.set(name, handler) } as unknown as ExtensionAPI);
   expect([...handlers.keys()]).toEqual(["session_start", "session_shutdown"]);

@@ -1,6 +1,6 @@
 ---
 name: cx-heartbeat
-description: "Scheduled checks in a ComChatX box - a heartbeat, a recurring check, a job at a time - run by pi-cron (`@bacnh85/pi-cron`) and its `cron` tool; what pi-cron's own words miss here. Needs @bacnh85/pi-cron; if no cron skill is listed, it is not installed, and the seller installs it in Plugins once it is listed there, or it is installed with `pi install -l npm:@bacnh85/pi-cron` run in /tenant (without -l it is gone at the box's next start). cx-heartbeat itself installs the same way: Plugins once listed, or `pi install -l npm:cx-heartbeat` in /tenant."
+description: "Scheduled checks in a ComChatX box - a heartbeat, a recurring check, a job at a time - run by pi-cron (`@bacnh85/pi-cron`) and its `cron` tool; what pi-cron's own words miss here. Needs @bacnh85/pi-cron; if no cron skill is listed, it is not installed, and the seller installs it in Plugins once it is listed there, or it is installed with `pi install -l npm:@bacnh85/pi-cron@0.4.0` run in /tenant (without -l it is gone at the box's next start). cx-heartbeat itself installs the same way: Plugins once listed, or `pi install -l npm:cx-heartbeat` in /tenant."
 ---
 
 ## When a job runs
@@ -16,5 +16,5 @@ description: "Scheduled checks in a ComChatX box - a heartbeat, a recurring chec
 - A fired job is a follow-up turn in the conversation that is open, after any turn under way; the seller sees it there.
 - In `cron action:"list"`, `[ok]` means pi took the job's turn, not that the work in it succeeded.
 - Every session runs in `/tenant`, so a job made without `cwd` fires here and needs no pin.
-- A pin (`model` or `thinking`) runs the job in a second, headless pi beside the session: a fire takes three model requests — the headless run, then the turn that reports its result, beside the seller's own — where an unpinned job takes one, and the second pi may meet pi's lock on the session's files.
+- A pin (`model` or `thinking`) runs the job in a second, headless pi beside the session: a fire takes two model requests, the headless run and the turn that reports its result, where an unpinned job takes one, and the second pi may hit pi's lock.
 - The jobs live in `/tenant/.pi/cx-heartbeat/cron/jobs.json`, so they outlast the box's stops; pi-cron's own words name `<agentDir>/cron`, which here is a link to that file's directory.
