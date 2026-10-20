@@ -1,7 +1,7 @@
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { DefaultResourceLoader, ExtensionRunner, SessionManager, SettingsManager } from "@earendil-works/pi-coding-agent";
+import { DefaultResourceLoader, SettingsManager } from "@earendil-works/pi-coding-agent";
 import { afterEach } from "vitest";
 
 const scratches: string[] = [];
@@ -22,6 +22,6 @@ export async function loadPackage(root: string) {
   writeFileSync(join(agentDir, "settings.json"), JSON.stringify({ defaultProjectTrust: "always", packages: [root] }));
   const loader = new DefaultResourceLoader({ cwd, agentDir, settingsManager: SettingsManager.create(cwd, agentDir) });
   await loader.reload();
-  const { extensions, runtime, errors } = loader.getExtensions();
-  return { loader, extensions, errors, runner: new ExtensionRunner(extensions, runtime, cwd, SessionManager.inMemory(cwd), undefined as never) };
+  const { extensions, errors } = loader.getExtensions();
+  return { loader, extensions, errors };
 }

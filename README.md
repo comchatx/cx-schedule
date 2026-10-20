@@ -6,7 +6,7 @@ It is one extension and one skill.
 
 ## The extension
 
-- **The jobs live in the seller's tree.** pi-cron keeps its jobs in `<agentDir>/cron/jobs.json`. In a box, the agent directory is made afresh at each start, so at the start of the seller's session (pi's RPC mode, `ctx.mode === "rpc"`) the extension links `<agentDir>/cron` to `<cwd>/.pi/cx-heartbeat/cron`, before pi-cron's first write. A real directory already there is moved into the store, unless a name in it is also in the store; then both are left as they are. Other pi processes — `pi install -l` and `pi remove -l` load extensions and start a session too — are not linked.
+- **The jobs live in the seller's tree.** pi-cron keeps its jobs in `<agentDir>/cron/jobs.json`. In a box, the agent directory is made afresh at each start, so at the start of the seller's session (pi's RPC mode, `ctx.mode === "rpc"`) the extension links `<agentDir>/cron` to `<cwd>/.pi/cx-heartbeat/cron`, before pi-cron's first write. A real directory already there is moved into the store, unless a name in it is also in the store; then both are left as they are. A print-mode pi — the model's own `pi -p`, or pi-cron's run of a pinned job — starts a session too and is not linked.
 - **One timer per session.** pi loads extensions afresh at every reload. pi-cron 0.4.0 arms its interval at load and again at `session_start` and has no `session_shutdown` handler, so the interval of the extension a reload replaced keeps ticking: it marks a due job fired, fails to deliver it, and records `delivery failed`. The extension notes each interval created from pi-cron's extension file (`…/pi-cron/extensions/index.ts`) and clears them all at every `session_shutdown`. It depends on that path and on pi-cron re-arming at `session_start`; it comes out once pi-cron clears its own interval.
 
 ## The skill
@@ -16,11 +16,11 @@ It is one extension and one skill.
 ## Install
 
 ```bash
-pi install -l npm:@bacnh85/pi-cron
+pi install -l npm:@bacnh85/pi-cron@0.4.0
 pi install -l npm:cx-heartbeat
 ```
 
-Run in `/tenant`; without `-l` the install is gone at the box's next start. On ComChatX, a seller installs both from the Plugins page once they are listed.
+pi-cron is named at 0.4.0, the version this package is checked against, so pi keeps that version. Run in `/tenant`; without `-l` the install is gone at the box's next start. On ComChatX, a seller installs both from the Plugins page once they are listed.
 
 ## Develop
 

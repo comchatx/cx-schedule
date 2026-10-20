@@ -82,7 +82,7 @@ export function clearTracked(tracked: Tracking): void {
 export default function heartbeat(pi: ExtensionAPI): void {
   const tracked = trackPiCronIntervals();
   pi.on("session_start", (_event, ctx: ExtensionContext) => {
-    // A package op's pi (`pi install -l`, `pi remove -l`) loads extensions and starts a session too; only the seller's session is linked.
+    // A print-mode pi (`pi -p`: the model's own, or pi-cron's run of a pinned job) starts a session too; only the seller's session is linked.
     if (ctx.mode === "rpc") linkStore(getAgentDir(), ctx.cwd);
   });
   pi.on("session_shutdown", () => clearTracked(tracked));
