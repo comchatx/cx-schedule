@@ -1,0 +1,54 @@
+{
+  "name": "cx-heartbeat",
+  "version": "0.1.0",
+  "description": "A pi package that keeps pi-cron's scheduled jobs in the seller's tree and its timer to one per session, and tells the model what a heartbeat is in a ComChatX box.",
+  "license": "MIT",
+  "author": "ComChatX",
+  "homepage": "https://github.com/comchatx/cx-heartbeat#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/comchatx/cx-heartbeat.git"
+  },
+  "bugs": "https://github.com/comchatx/cx-heartbeat/issues",
+  "keywords": [
+    "pi-package"
+  ],
+  "type": "module",
+  "pi": {
+    "extensions": [
+      "./dist/extensions"
+    ],
+    "skills": [
+      "./skills"
+    ]
+  },
+  "files": [
+    "dist",
+    "skills"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "prepack": "npm run build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-coding-agent": "1.1.0",
+    "@types/node": "26.2.0",
+    "esbuild": "0.27.2",
+    "typescript": "7.0.2",
+    "vitest": "4.1.11"
+  },
+  "overrides": {
+    "@earendil-works/chord": "1.1.0",
+    "@earendil-works/pi-ai": "1.1.0",
+    "@earendil-works/pi-mcp": "1.1.0",
+    "@earendil-works/pi-tui": "1.1.0",
+    "@earendil-works/pi-codemode": "1.1.0",
+    "@earendil-works/pi-agent-core": "1.1.0",
+    "@earendil-works/pi-telemetry": "1.1.0"
+  }
+}
