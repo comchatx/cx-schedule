@@ -1,6 +1,6 @@
 ---
 name: cx-heartbeat
-description: "Scheduled checks in a ComChatX box - a heartbeat, a recurring check, a job at a time - run by pi-cron (`@bacnh85/pi-cron`) and its `cron` tool; what pi-cron's own words miss here. Needs @bacnh85/pi-cron; if no cron skill is listed, it is not installed, and the seller installs it in Plugins once it is listed there, or it is installed with `pi install -l npm:@bacnh85/pi-cron@0.4.0` run in /tenant (without -l it is gone at the box's next start). cx-heartbeat itself installs the same way: Plugins once listed, or `pi install -l npm:cx-heartbeat` in /tenant."
+description: "Scheduled checks in a ComChatX box - a heartbeat, a recurring check, a job at a time - run by pi-cron (`@bacnh85/pi-cron`) and its `cron` tool; what pi-cron's own words miss here. Needs @bacnh85/pi-cron; if no cron skill is listed, it is not installed, and the seller installs cx-heartbeat again in Plugins, which installs it first, or it is installed with `pi install -l npm:@bacnh85/pi-cron@0.4.0` run in /tenant (without -l it is gone at the box's next start). cx-heartbeat itself installs from Plugins, or `pi install -l npm:cx-heartbeat` in /tenant."
 ---
 
 ## When a job runs

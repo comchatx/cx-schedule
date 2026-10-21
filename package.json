@@ -1,9 +1,21 @@
 {
   "name": "cx-heartbeat",
-  "version": "0.1.0",
-  "description": "A pi package that keeps pi-cron's scheduled jobs in the seller's tree and its timer to one per session, and tells the model what a heartbeat is in a ComChatX box.",
+  "version": "0.1.1",
+  "description": "Lets cx do things for you at the times you set.",
   "license": "MIT",
   "author": "ComChatX",
+  "comchatx": {
+    "about": "让 cx 在你设定的时间替你做事。",
+    "description": "让 cx 在设定的时间做某件事，比如每小时检查一次 listing 的 Buy Box，cx 会把它存为定时任务，cx 的电脑关机后任务也不会丢失。\n\n## 什么时候运行\n\n任务只在 cx 的电脑开机时运行，即你正在使用 cx，或已让 cx 保持开机时。到点时如果 cx 的电脑已关机，任务不会运行，也不会让它开机。\n\n## 费用\n\n保持开机的时长需要付费，运行频繁的任务也会让 cx 的电脑保持开机。",
+    "mark": {
+      "line": "clock"
+    },
+    "section": "extensions",
+    "order": 30,
+    "builds": [
+      "@bacnh85/pi-cron"
+    ]
+  },
   "homepage": "https://github.com/comchatx/cx-heartbeat#readme",
   "repository": {
     "type": "git",
