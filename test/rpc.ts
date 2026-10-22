@@ -3,9 +3,14 @@ import { createServer } from "node:http";
 import type { AddressInfo } from "node:net";
 import { createInterface } from "node:readline";
 
-/** A model on loopback that answers `Done.` and keeps the last user text of each request. */
+/**
+ * A model on loopback that answers `Done.` and keeps the last user text of each request, with the time it came. A user text
+ * `CALL <tool> <json>` is answered with that one tool call instead, and the tool's result then with `Done.`.
+ */
 export async function loopbackModel() {
   const texts: string[] = [];
+  const times: number[] = [];
+  let calls = 0;
   const server = createServer((request, response) => {
     const chunks: Buffer[] = [];
     request.on("data", (chunk: Buffer) => chunks.push(chunk));
@@ -13,12 +18,20 @@ export async function loopbackModel() {
       const body = JSON.parse(Buffer.concat(chunks).toString()) as { model: string; messages: { role: string; content: unknown }[] };
       const last = body.messages.filter((message) => message.role !== "system").at(-1);
       const content = last?.content;
-      texts.push(typeof content === "string" ? content : (content as { text?: string }[] | undefined ?? []).map((block) => block.text ?? "").join(""));
+      const text = typeof content === "string" ? content : (content as { text?: string }[] | undefined ?? []).map((block) => block.text ?? "").join("");
+      texts.push(text);
+      times.push(Date.now());
       const chunk = (delta: unknown, finish: string | null) =>
         `data: ${JSON.stringify({ id: "x", object: "chat.completion.chunk", created: 1, model: body.model, choices: [{ index: 0, delta, finish_reason: finish }], ...(finish === null ? {} : { usage: { prompt_tokens: 1, completion_tokens: 1, total_tokens: 2 } }) })}\n\n`;
       response.writeHead(200, { "content-type": "text/event-stream" });
-      response.write(chunk({ role: "assistant", content: "Done." }, null));
-      response.write(chunk({}, "stop"));
+      const call = last?.role === "user" ? /^CALL (\S+) (.*)$/s.exec(text) : null;
+      if (call !== null) {
+        response.write(chunk({ role: "assistant", tool_calls: [{ index: 0, id: `call_${++calls}`, type: "function", function: { name: call[1], arguments: call[2] } }] }, null));
+        response.write(chunk({}, "tool_calls"));
+      } else {
+        response.write(chunk({ role: "assistant", content: "Done." }, null));
+        response.write(chunk({}, "stop"));
+      }
       response.end("data: [DONE]\n\n");
     });
   });
@@ -26,6 +39,7 @@ export async function loopbackModel() {
   return {
     url: `http://127.0.0.1:${(server.address() as AddressInfo).port}/v1`,
     texts,
+    times,
     close: () => new Promise<void>((done) => { server.closeAllConnections(); server.close(() => done()); }),
   };
 }

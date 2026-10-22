@@ -1,29 +1,30 @@
-# Developing cx-heartbeat
+# Developing cx-schedule
 
 What a seller reads is `README.md`, which npm and the Plugins page show. This page is for whoever works on the package.
 
+A [pi](https://pi.dev) package for scheduled tasks in a [ComChatX](https://comchatx.com) box, run by [`@amaster.ai/pi-task-scheduler`](https://www.npmjs.com/package/@amaster.ai/pi-task-scheduler). It schedules nothing itself: it carries the scheduler in its own tarball, as pi's `docs/packages.md` asks of a package that uses another, and loads it.
 
-A [pi](https://pi.dev) package for scheduled jobs in a [ComChatX](https://comchatx.com) box, run by [pi-cron](https://www.npmjs.com/package/@bacnh85/pi-cron) (`@bacnh85/pi-cron`). It does not schedule anything itself and neither bundles nor depends on pi-cron: its `comchatx` field names pi-cron in `builds`, and the Plugins page installs pi-cron with it.
-
-It is one extension and one skill.
+It is one extension and one skill. It was published as `cx-heartbeat` until 2026-10-22, built around `@bacnh85/pi-cron`.
 
 ## The extension
 
-- **The jobs live in the seller's tree.** pi-cron keeps its jobs in `<agentDir>/cron/jobs.json`. In a box, the agent directory is made afresh at each start, so at the start of the seller's session (pi's RPC mode, `ctx.mode === "rpc"`) the extension links `<agentDir>/cron` to `<cwd>/.pi/cx-heartbeat/cron`, before pi-cron's first write. A real directory already there is moved into the store, unless a name in it is also in the store; then both are left as they are. A print-mode pi — the model's own `pi -p`, or pi-cron's run of a pinned job — starts a session too and is not linked.
-- **One timer per session.** pi loads extensions afresh at every reload. pi-cron 0.4.0 arms its interval at load and again at `session_start` and has no `session_shutdown` handler, so the interval of the extension a reload replaced keeps ticking: it marks a due job fired, fails to deliver it, and records `delivery failed`. The extension notes each interval created from pi-cron's extension file (`…/pi-cron/extensions/index.ts`) and clears them all at every `session_shutdown`. It depends on that path and on pi-cron re-arming at `session_start`; it comes out once pi-cron clears its own interval.
+- **It carries the scheduler.** `package.json` pins `@amaster.ai/pi-task-scheduler` at one version in `dependencies` and names it in `bundleDependencies`, so `npm pack` puts it, and what it depends on, in the tarball's `node_modules`. The build leaves its import for that copy rather than inlining it. Its `comchatx` field names it in `builds` with `carried: true`: the Plugins page shows it under Plugins it uses, with its warning on the install card, and installs nothing beside this package.
+- **It loads the scheduler through the scheduler's own extension entry**, the `./extension` export, the file its own `pi` manifest names, with no change to its code.
+- **The tasks live in the seller's tree.** The scheduler keeps its tasks in `<agent directory>/data` unless told otherwise, and a box makes the agent directory afresh at each start. The extension gives it `<cwd>/.pi/cx-schedule/scheduler`.
+
+The scheduler stops its timers at each `session_shutdown`, which pi sends before a reload, so a reload leaves one timer; a task belongs to the session it was made in; a time that falls while pi is not running is skipped.
 
 ## The skill
 
-`cx-heartbeat` tells the model what pi-cron's own words miss in a box: when a job runs (only while the box is awake, which is billed), where a fired job lands, why a job needs no pin, the clock's zone, and where the jobs are kept.
+`cx-schedule` tells the model what the scheduler's own words miss in a box: when a task runs (only while the box is awake, which is billed), what happens to a time the box slept through, where a task lands, the clock's zone, and where the tasks are kept.
 
 ## Install
 
 ```bash
-pi install -l npm:@bacnh85/pi-cron@0.4.0
-pi install -l npm:cx-heartbeat
+pi install -l npm:@comchatx/cx-schedule
 ```
 
-pi-cron is named at 0.4.0, the version this package is checked against, so pi keeps that version. Run in `/tenant`; without `-l` the install is gone at the box's next start. On ComChatX, a seller installs it from the Plugins page, which installs pi-cron with it at npm's latest.
+Run in `/tenant`; without `-l` the install is gone at the box's next start. On ComChatX, a seller installs it from the Plugins page. Do not install the scheduler beside it.
 
 ## Develop
 
@@ -33,6 +34,10 @@ npm run typecheck
 npm test
 ```
 
-`test/witness.test.ts` installs pi-cron 0.4.0 from npm (without its scripts), runs the pinned pi in RPC mode against a model on loopback, reloads it as the box does, and checks that a due job is delivered, in both load orders, after the first reload and after a package op's reload; without this package the same job fails. It takes about a minute and a half.
+`test/witness.test.ts` packs this package, unpacks the tarball as npm would install it, and runs the pinned pi in RPC mode against a model on loopback that calls `scheduler_create`. It checks that a task fires into the session it was made in and not into another, keeps one timer across reloads, and keeps its tasks across a start on a fresh agent directory; without the task directory the same tasks are gone.
 
 The source is `src/extensions/`; `npm run build` bundles it into `dist/extensions/`, the directory the package's `pi` manifest names. Tests live under `test/`.
+
+## Release
+
+A `v*` tag whose name is the version publishes by npm's trusted publishing (`.github/workflows/release.yml`).
