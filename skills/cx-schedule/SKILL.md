@@ -1,6 +1,6 @@
 ---
 name: cx-schedule
-description: "Scheduled tasks in a ComChatX box - a recurring check, a task at a time - run by the scheduler cx-schedule carries (`@amaster.ai/pi-task-scheduler`) and its `scheduler_*` tools; what the tools' own words miss here. cx-schedule installs from Plugins, or with `pi install -l npm:@comchatx/cx-schedule` run in /tenant (without -l it is gone at the box's next start). Do not install `@amaster.ai/pi-task-scheduler` beside it: cx-schedule carries it, and a second copy loads it twice."
+description: "Scheduled tasks in a ComChatX box - a recurring check, a task at a time - run by `@amaster.ai/pi-task-scheduler`, which cx-schedule needs, and its `scheduler_*` tools; what the tools' own words miss here. cx-schedule needs `@amaster.ai/pi-task-scheduler`: where no `scheduler_*` tool is there, the scheduler is not installed, and the seller installs it in Plugins, which installs it with cx-schedule. cx-schedule installs from Plugins, or with `pi install -l npm:@comchatx/cx-schedule` run in /tenant (without -l it is gone at the box's next start)."
 ---
 
 ## When a task runs
@@ -15,4 +15,4 @@ description: "Scheduled tasks in a ComChatX box - a recurring check, a task at a
 - A task belongs to the conversation it was made in. It runs as a follow-up turn there, after any turn under way, and only while that conversation is the open one; in another conversation it neither runs nor shows in `scheduler_list`.
 - A run's `success` means pi took the turn, not that the work in it succeeded.
 - A task runs on the conversation's own model: the `model` a task records is not used.
-- The tasks live in `/tenant/.pi/cx-schedule/scheduler/`, so they outlast the box's stops.
+- The tasks live in `/tenant/.pi/pi-scheduler/`, where the box points the scheduler, so they outlast the box's stops.
