@@ -1,34 +1,40 @@
 {
-  "name": "cx-heartbeat",
-  "version": "0.1.0",
-  "description": "A pi package that keeps pi-cron's scheduled jobs in the seller's tree and its timer to one per session, and tells the model what a heartbeat is in a ComChatX box.",
+  "name": "@comchatx/cx-schedule",
+  "version": "0.3.0",
+  "description": "Lets cx do things for you at the times you set.",
   "license": "MIT",
   "author": "ComChatX",
-  "homepage": "https://github.com/comchatx/cx-heartbeat#readme",
+  "comchatx": {
+    "about": "让 cx 在你设定的时间替你做事。",
+    "description": "让 cx 在设定的时间做某件事，比如每小时检查一次 listing 的 Buy Box，cx 会把它存为定时任务，cx 的电脑关机后任务也不会丢失。\n\n## 什么时候运行\n\n任务只在 cx 的电脑开机时运行，即你正在使用 cx，或已让 cx 保持开机时。到点时如果 cx 的电脑已关机，任务不会运行，也不会让它开机。\n\n## 费用\n\n保持开机的时长需要付费，运行频繁的任务也会让 cx 的电脑保持开机。",
+    "mark": {
+      "line": "clock"
+    },
+    "section": "extensions",
+    "order": 30,
+    "builds": [
+      "@amaster.ai/pi-task-scheduler"
+    ]
+  },
+  "homepage": "https://github.com/comchatx/cx-schedule#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/comchatx/cx-heartbeat.git"
+    "url": "git+https://github.com/comchatx/cx-schedule.git"
   },
-  "bugs": "https://github.com/comchatx/cx-heartbeat/issues",
+  "bugs": "https://github.com/comchatx/cx-schedule/issues",
   "keywords": [
     "pi-package"
   ],
   "type": "module",
   "pi": {
-    "extensions": [
-      "./dist/extensions"
-    ],
     "skills": [
       "./skills"
     ]
   },
   "files": [
-    "dist",
     "skills"
   ],
   "scripts": {
-    "build": "node scripts/build.mjs",
-    "prepack": "npm run build",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },
@@ -36,19 +42,17 @@
     "@earendil-works/pi-coding-agent": "*"
   },
   "devDependencies": {
-    "@earendil-works/pi-coding-agent": "1.1.0",
+    "@earendil-works/pi-coding-agent": "1.3.0",
     "@types/node": "26.2.0",
-    "esbuild": "0.27.2",
     "typescript": "7.0.2",
     "vitest": "4.1.11"
   },
   "overrides": {
-    "@earendil-works/chord": "1.1.0",
-    "@earendil-works/pi-ai": "1.1.0",
-    "@earendil-works/pi-mcp": "1.1.0",
-    "@earendil-works/pi-tui": "1.1.0",
-    "@earendil-works/pi-codemode": "1.1.0",
-    "@earendil-works/pi-agent-core": "1.1.0",
-    "@earendil-works/pi-telemetry": "1.1.0"
+    "@earendil-works/pi-ai": "1.3.0",
+    "@earendil-works/pi-mcp": "1.3.0",
+    "@earendil-works/pi-tui": "1.3.0",
+    "@earendil-works/pi-codemode": "1.3.0",
+    "@earendil-works/pi-agent-core": "1.3.0",
+    "@earendil-works/pi-telemetry": "1.3.0"
   }
 }

@@ -1,35 +1,42 @@
+import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { expect, it } from "vitest";
-import { build } from "../scripts/build.mjs";
-import { loadPackage } from "./pi.js";
+import { loadPackage, scratch } from "./pi.js";
 
 const ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
-const EXTENSION = join(ROOT, "dist", "extensions", "heartbeat.js");
+const SCHEDULER = "@amaster.ai/pi-task-scheduler";
+const manifest = (): Record<string, any> => JSON.parse(readFileSync(join(ROOT, "package.json"), "utf8"));
 
-it("the pinned pi loads the built extension, its two handlers and the one skill named for the package", async () => {
-  expect(build(ROOT)).toEqual([EXTENSION]);
+it("the pinned pi loads the one skill named for the package, and no extension", async () => {
   const { loader, extensions, errors } = await loadPackage(ROOT);
   expect(errors).toEqual([]);
-  expect(extensions.map((extension) => extension.path)).toEqual([EXTENSION]);
-  expect(extensions.map((extension) => [...extension.handlers.keys()])).toEqual([["session_start", "session_shutdown"]]);
+  expect(extensions).toEqual([]);
   const skills = loader.getSkills();
   expect(skills.diagnostics).toEqual([]);
-  expect(skills.skills.map((skill) => [skill.name, skill.filePath])).toEqual([["cx-heartbeat", join(ROOT, "skills", "cx-heartbeat", "SKILL.md")]]);
+  expect(skills.skills.map((skill) => [skill.name, skill.filePath])).toEqual([["cx-schedule", join(ROOT, "skills", "cx-schedule", "SKILL.md")]]);
 });
 
-it("the skill's description says what it needs and how both packages install", async () => {
+it("is @comchatx/cx-schedule, and its skill says how it installs, that it needs the scheduler, and how cx tells the scheduler is not installed", async () => {
+  expect([manifest()["name"], manifest()["repository"]["url"]]).toEqual(["@comchatx/cx-schedule", "git+https://github.com/comchatx/cx-schedule.git"]);
   const { loader } = await loadPackage(ROOT);
   const [skill] = loader.getSkills().skills;
-  expect(skill!.description).toContain("if no cron skill is listed, it is not installed");
-  expect(skill!.description).toContain("`pi install -l npm:@bacnh85/pi-cron@0.4.0` run in /tenant (without -l it is gone at the box's next start)");
-  expect(skill!.description).toContain("`pi install -l npm:cx-heartbeat` in /tenant");
+  expect(skill!.description).toContain("`pi install -l npm:@comchatx/cx-schedule` run in /tenant (without -l it is gone at the box's next start)");
+  expect(skill!.description).toContain("cx-schedule needs `@amaster.ai/pi-task-scheduler`: where no `scheduler_*` tool is there, the scheduler is not installed, and the seller installs it in Plugins");
+  const body = readFileSync(join(ROOT, "skills", "cx-schedule", "SKILL.md"), "utf8");
+  // What the signed README says of a time that falls while the computer is off.
+  expect(body).toContain("A task whose time falls while the box sleeps does not run, and does not wake the box");
+  expect(body).toContain("`/tenant/.pi/pi-scheduler/`");
 });
 
-it("the package neither bundles nor lists pi-cron", () => {
-  const manifest = JSON.parse(readFileSync(join(ROOT, "package.json"), "utf8")) as Record<string, unknown>;
-  for (const field of ["dependencies", "optionalDependencies", "bundleDependencies", "bundledDependencies"]) expect(manifest[field], field).toBeUndefined();
-  for (const field of ["peerDependencies", "devDependencies", "overrides"]) expect(JSON.stringify(manifest[field]), field).not.toContain("pi-cron");
-  expect(readFileSync(EXTENSION, "utf8")).not.toMatch(/cron-parser|luxon/);
-});
+it("names the scheduler as required for the Plugins page and carries no copy of it", () => {
+  expect(manifest()["comchatx"]["builds"]).toEqual([SCHEDULER]);
+  expect(manifest()["dependencies"]).toBeUndefined();
+  expect(manifest()["bundleDependencies"]).toBeUndefined();
+  expect(manifest()["pi"]).toEqual({ skills: ["./skills"] });
+  expect(JSON.stringify(manifest())).not.toContain("pi-cron");
+  const out = scratch();
+  const [packed] = JSON.parse(execFileSync("npm", ["pack", "--dry-run", "--json", "--ignore-scripts", "--pack-destination", out], { cwd: ROOT, encoding: "utf8" })) as { files: { path: string }[] }[];
+  expect(packed!.files.map((file) => file.path).sort()).toEqual(["LICENSE", "README.md", "package.json", "skills/cx-schedule/SKILL.md"]);
+}, 60_000);
