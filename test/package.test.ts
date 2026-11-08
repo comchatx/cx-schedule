@@ -38,5 +38,11 @@ it("names the scheduler as required for the Plugins page and carries no copy of 
   expect(JSON.stringify(manifest())).not.toContain("pi-cron");
   const out = scratch();
   const [packed] = JSON.parse(execFileSync("npm", ["pack", "--dry-run", "--json", "--ignore-scripts", "--pack-destination", out], { cwd: ROOT, encoding: "utf8" })) as { files: { path: string }[] }[];
-  expect(packed!.files.map((file) => file.path).sort()).toEqual(["LICENSE", "README.md", "package.json", "skills/cx-schedule/SKILL.md"]);
+  expect(packed!.files.map((file) => file.path).sort()).toEqual(["LICENSE", "README.md", "README.zh-CN.md", "package.json", "skills/cx-schedule/SKILL.md"]);
 }, 60_000);
+
+it("the comchatx field carries no description, which the Plugins page never draws: the card's Chinese line is about", () => {
+  const field = (JSON.parse(readFileSync(join(ROOT, "package.json"), "utf8")) as { comchatx: Record<string, unknown> }).comchatx;
+  expect(field["description"]).toBeUndefined();
+  expect(field["about"]).toMatch(/[一-鿿]/);
+});
