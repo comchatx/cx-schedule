@@ -1,6 +1,6 @@
 {
   "name": "@comchatx/cx-schedule",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Lets cx do things for you at the times you set.",
   "license": "MIT",
   "author": "ComChatX",
@@ -13,7 +13,13 @@
     "order": 30,
     "builds": [
       "@amaster.ai/pi-task-scheduler"
-    ]
+    ],
+    "awake": true,
+    "settings": {
+      "pi-scheduler": {
+        "dataDir": "{tree}/.pi/pi-scheduler"
+      }
+    }
   },
   "homepage": "https://github.com/comchatx/cx-schedule#readme",
   "repository": {
