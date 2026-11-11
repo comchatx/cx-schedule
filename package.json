@@ -1,10 +1,11 @@
 {
   "name": "@comchatx/cx-schedule",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Lets cx do things for you at the times you set.",
   "license": "MIT",
   "author": "ComChatX",
   "comchatx": {
+    "name": "Scheduled Tasks",
     "about": "让 cx 在你设定的时间替你做事。",
     "mark": {
       "line": "clock"
