@@ -1,4 +1,4 @@
-Tell cx what to do and when, such as summing up yesterday's orders at 9 every morning, and cx keeps it as a scheduled job and does it on time, in the conversation where you asked. Your store's data needs Amazon SP-API.
+Tell cx what to do and when, such as summing up yesterday's orders at 9 every morning, and cx keeps it as a scheduled job and does it on time, in the conversation where you asked. Your store's data needs [Amazon SP-API](https://www.npmjs.com/package/cx-amazon-sp-api).
 
 Some things you can ask:
 
