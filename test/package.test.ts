@@ -48,6 +48,7 @@ it("the comchatx field carries no description, which the Plugins page never draw
 });
 
 it("the card's name is comchatx.name, the one signed on 2026-11-11", () => {
-  const field = (JSON.parse(readFileSync(join(ROOT, "package.json"), "utf8")) as { comchatx: { name?: unknown } }).comchatx;
+  const field = (JSON.parse(readFileSync(join(ROOT, "package.json"), "utf8")) as { comchatx: { name?: unknown; nameZh?: unknown } }).comchatx;
   expect(field.name).toBe("Scheduled Tasks");
+  expect(field.nameZh).toBe("定时任务");
 });
