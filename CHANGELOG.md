@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.6
+
+- The README's first paragraph ends "Jobs that read your store need your Amazon seller account connected." / 「读取店铺数据的任务，要先连上你的亚马逊卖家账户。」 in place of the sentence naming Amazon SP-API (signed on 2026-11-19).
+- The README's "What it needs" section goes, its heading with it: the Plugins page draws pi-task-scheduler from `comchatx.builds`.
+- The Chinese README's "任务何时运行" reads 「……即你正在使用 cx 时，或在设置里打开「保持开机」之后。」 (signed on 2026-11-15).
+- `comchatx.awake` is removed: the platform no longer reads it.
+
 ## 0.3.5
 
 - The card's name is the one signed on 2026-11-17: "Scheduled Tasks" on the English page (`comchatx.name`) and 「定时任务」 on the Chinese page (`comchatx.nameZh`).
