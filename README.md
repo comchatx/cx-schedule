@@ -1,4 +1,4 @@
-Tell cx what to do and when, such as summing up yesterday's orders at 9 every morning, and cx keeps it as a scheduled job and does it on time, in the conversation where you asked. Your store's data needs [Amazon SP-API](https://www.npmjs.com/package/cx-amazon-sp-api).
+Tell cx what to do and when, such as summing up yesterday's orders at 9 every morning, and cx keeps it as a scheduled job and does it on time, in the conversation where you asked. Jobs that read your store need your Amazon seller account connected.
 
 Some things you can ask:
 
@@ -13,7 +13,3 @@ Jobs run only while cx's computer is on, that is, while you use cx or after you 
 ## What it costs
 
 You pay for the time cx's computer is kept on, and a job that runs often keeps it on.
-
-## What it needs
-
-It needs pi-task-scheduler, which Plugins installs with it.
