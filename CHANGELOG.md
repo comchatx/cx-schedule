@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.7
+
+- The tile's mark on the Plugins page is the signed drawing.
+
 ## 0.3.6
 
 - The README's first paragraph ends "Jobs that read your store need your Amazon seller account connected." / 「读取店铺数据的任务，要先连上你的亚马逊卖家账户。」 in place of the sentence naming Amazon SP-API (signed on 2026-11-18).
