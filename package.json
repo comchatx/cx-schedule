@@ -1,6 +1,6 @@
 {
   "name": "@comchatx/cx-schedule",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "description": "Lets cx do things for you at the times you set.",
   "license": "MIT",
   "author": "ComChatX",
@@ -9,7 +9,16 @@
     "nameZh": "定时任务",
     "about": "让 cx 在你设定的时间替你做事。",
     "mark": {
-      "line": "clock"
+      "draw": [
+        {
+          "d": "M4.4 13.4a7.6 7.6 0 1 1 15.2 0a7.6 7.6 0 1 1 -15.2 0zM11.1 9.4h1.8v3.7l2.4 1.5-.95 1.55-3.25-2.05z",
+          "rule": "evenodd"
+        },
+        {
+          "d": "M3.3 7.9a4.1 4.1 0 0 1 4.6-4.6c.45.05.62.6.3.92L4.2 8.2c-.32.32-.86.15-.9-.3zM20.7 7.9a4.1 4.1 0 0 0-4.6-4.6c-.45.05-.62.6-.3.92l4 3.98c.32.32.86.15.9-.3z",
+          "rule": "evenodd"
+        }
+      ]
     },
     "section": "extensions",
     "order": 30,
