@@ -1,6 +1,6 @@
 ---
 name: cx-schedule
-description: "Scheduled tasks in a ComChatX box - a recurring check, a task at a time - run by `@amaster.ai/pi-task-scheduler`, which cx-schedule needs, and its `scheduler_*` tools; what the tools' own words miss here. cx-schedule needs `@amaster.ai/pi-task-scheduler`: where no `scheduler_*` tool is there, the scheduler is not installed, and the seller installs it in Plugins, which installs it with cx-schedule. cx-schedule installs from Plugins, or with `pi install -l npm:@comchatx/cx-schedule` run in /tenant (without -l it is gone at the box's next start)."
+description: "Scheduled tasks in the seller's box - a recurring check, a task at a time - run by `@amaster.ai/pi-task-scheduler`, which cx-schedule needs, and its `scheduler_*` tools; what the tools' own words miss here. cx-schedule needs `@amaster.ai/pi-task-scheduler`: where no `scheduler_*` tool is there, the scheduler is not installed, and the seller installs it in Plugins, which installs it with cx-schedule. cx-schedule installs from Plugins, or with `pi install -l npm:@comchatx/cx-schedule` run in /tenant (without -l it is gone at the box's next start)."
 ---
 
 ## When a task runs
