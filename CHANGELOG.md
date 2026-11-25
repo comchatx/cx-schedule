@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.8
+
+- The Chinese README's first paragraph ends 「读取店铺数据的任务，要先连接你的亚马逊店铺。」, and its first example reads 「每天早上 9 点，按站点汇总前一天的订单数和销售额。」.
+- `comchatx.skills` gives the skill's line in the chat's `/` list, in both languages: "Tells cx when a scheduled task runs and in which conversation." / 「告诉 cx 定时任务何时运行、在哪个对话里做。」.
+- The skill's description says "in the seller's box" in place of "in a ComChatX box".
+
 ## 0.3.7
 
 - The tile's mark on the Plugins page is the signed drawing.

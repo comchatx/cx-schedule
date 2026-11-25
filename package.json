@@ -1,6 +1,6 @@
 {
   "name": "@comchatx/cx-schedule",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "description": "Lets cx do things for you at the times you set.",
   "license": "MIT",
   "author": "ComChatX",
@@ -8,6 +8,12 @@
     "name": "Scheduled Tasks",
     "nameZh": "定时任务",
     "about": "让 cx 在你设定的时间替你做事。",
+    "skills": {
+      "cx-schedule": {
+        "en": "Tells cx when a scheduled task runs and in which conversation.",
+        "zh": "告诉 cx 定时任务何时运行、在哪个对话里做。"
+      }
+    },
     "mark": {
       "draw": [
         {
